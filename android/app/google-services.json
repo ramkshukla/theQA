@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339016199100",
+    "project_id": "theqa-58df7",
+    "storage_bucket": "theqa-58df7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339016199100:android:04573ea4d5f6a34a1d19b9",
+        "android_client_info": {
+          "package_name": "com.example.the_qa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3qxbCS_uR97eCZkNtqU2B98UGDCCkWSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

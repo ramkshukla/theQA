@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:the_qa/_util/extension.dart';
+import 'package:the_qa/_util/string_constants.dart';
 import 'package:the_qa/home/controller/home_bloc.dart';
 import 'package:the_qa/home/controller/home_event.dart';
 import 'package:the_qa/home/controller/home_state.dart';
@@ -33,7 +31,10 @@ class HomeUI extends StatelessWidget {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text("Home"),
+            title: const Text(
+              HomeConstants.home,
+              style: TextStyle(fontSize: 16),
+            ),
             centerTitle: true,
             actions: [
               IconButton(
@@ -53,7 +54,6 @@ class HomeUI extends StatelessWidget {
                         );
                       });
                   if (result != null) {
-                    "Result : ${result["text"]}".logIt;
                     context.read<HomeBloc>().add(
                           SavePost(
                             userId: state.userModel.uid,
@@ -67,7 +67,9 @@ class HomeUI extends StatelessWidget {
             ],
           ),
           body: state.isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
               : Column(
                   children: [
                     Expanded(
@@ -76,6 +78,17 @@ class HomeUI extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return QuestionWidget(
                             image: "",
+                            postAnswerOnPressed: () {
+                              context.read<HomeBloc>().add(
+                                    PostAnswer(
+                                      questionId:
+                                          state.questionModel[index].questionId,
+                                      question:
+                                          state.questionModel[index].question,
+                                      userId: state.questionModel[index].userId,
+                                    ),
+                                  );
+                            },
                             name: state.userModel.name,
                             question: state.questionModel[index].question,
                           );

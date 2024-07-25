@@ -1,21 +1,21 @@
-class QuestionModel {
+class AnswerModel {
   final String questionId;
   final String question;
   final String userId;
-  QuestionModel({
+  AnswerModel({
     required this.questionId,
     required this.question,
     required this.userId,
   });
 
-  factory QuestionModel.initial() =>
-      QuestionModel(questionId: "", question: "", userId: "");
+  factory AnswerModel.initial() =>
+      AnswerModel(questionId: "", question: "", userId: "");
 
-  factory QuestionModel.fromJson(MapEntry<String, dynamic> json) {
-    return QuestionModel(
+  factory AnswerModel.fromJson(MapEntry<String, dynamic> json) {
+    return AnswerModel(
       questionId: json.key,
-      question: json.value['question'],
-      userId: json.value['userId'],
+      question: json.value["question"],
+      userId: json.value["userId"],
     );
   }
 

@@ -23,3 +23,14 @@ class SaveQuestion extends HomeEvent {
 class GetQuestion extends HomeEvent {
   GetQuestion();
 }
+
+class PostAnswer extends HomeEvent {
+  final String questionId;
+  final String question;
+  final String userId;
+  PostAnswer({
+    required this.questionId,
+    required this.question,
+    required this.userId,
+  });
+}

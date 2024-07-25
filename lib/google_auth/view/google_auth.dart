@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_qa/_util/string_constants.dart';
 import 'package:the_qa/google_auth/controller/google_auth_bloc.dart';
 import 'package:the_qa/google_auth/controller/google_auth_event.dart';
 import 'package:the_qa/google_auth/controller/google_auth_state.dart';
@@ -36,7 +37,7 @@ class GoogleAuthUI extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text("The QA"),
+            title: const Text(GoogleAuthConstants.title),
             centerTitle: true,
           ),
           body: Container(
@@ -46,11 +47,11 @@ class GoogleAuthUI extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "One stop plateform for Questinare",
+                    GoogleAuthConstants.heading,
                     style: TextStyle(fontSize: 16),
                   ),
                   const Text(
-                    "Let's get started",
+                    GoogleAuthConstants.subHeading,
                     style: TextStyle(fontSize: 16),
                   ),
                   const SizedBox(height: 20),
@@ -64,7 +65,7 @@ class GoogleAuthUI extends StatelessWidget {
                       context.read<GoogleAuthBloc>().add(SignInEvent());
                     },
                     child: const Text(
-                      "Google",
+                      GoogleAuthConstants.google,
                       style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   )

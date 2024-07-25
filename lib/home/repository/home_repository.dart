@@ -9,6 +9,11 @@ abstract class HomeRepository {
   Future<UserModel> getUserData();
   Future<void> savePost({required String questionId, required String question});
   Future<List<QuestionModel>> getQuestions();
+  Future<void> postAnswer({
+    required String questionId,
+    required String question,
+    required String userId,
+  });
 }
 
 class HomeRepositoryImpl extends HomeRepository {
@@ -49,12 +54,38 @@ class HomeRepositoryImpl extends HomeRepository {
 
     Map<String, dynamic> data =
         Map<String, dynamic>.from(snapshot.value as Map);
-    List<QuestionModel> questions = data.entries.map((entry) {
-      Map<String, dynamic> questionData =
-          Map<String, dynamic>.from(entry.value as Map);
 
-      return QuestionModel.fromJson(questionData);
+    List<QuestionModel> questionsList = data.entries.map((entry) {
+      return QuestionModel.fromJson((entry));
     }).toList();
-    return questions;
+
+    return questionsList;
+  }
+
+  @override
+  Future<void> postAnswer({
+    required String questionId,
+    required String question,
+    required String userId,
+  }) {
+    Completer completer = Completer();
+
+    // DatabaseReference ref = FirebaseDatabase.instance
+    //     .ref("posts/${FirebaseDatabase.instance.ref().root.push().key}");
+    DatabaseReference ref = FirebaseDatabase.instance.ref();
+    String? uniqKey = ref.child("Answers").push().key;
+    DatabaseReference uRef = ref.child("Answers").child(uniqKey!);
+
+    completer.complete(
+      uRef.set(
+        {
+          "userId": userId,
+          "answer": question,
+          "questionId": questionId,
+        },
+      ),
+    );
+
+    return completer.future;
   }
 }

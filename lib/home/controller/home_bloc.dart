@@ -42,5 +42,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(questionModel: questions, isLoading: false));
       },
     );
+
+    on<PostAnswer>(
+      (event, emit) async {
+        emit(state.copyWith(isLoading: true));
+        await HomeRepositoryImpl().postAnswer(
+          questionId: event.questionId,
+          question: event.question,
+          userId: event.userId,
+        );
+        emit(state.copyWith(isLoading: false));
+      },
+    );
   }
 }

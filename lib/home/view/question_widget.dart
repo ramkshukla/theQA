@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:the_qa/_util/extension.dart';
 
-class QuestionWidget extends StatefulWidget {
+class QuestionWidget extends StatelessWidget {
   final String image;
   final String name;
   final String question;
-  final Function() postAnswerOnPressed;
+  // final Function() postAnswerOnPressed;
+  // final List<AnswerModel> answer;
+  final Function() answerPressed;
+  // final TextEditingController answerController;
   const QuestionWidget({
     super.key,
+    // required this.answerController,
+    // required this.answer,
     required this.image,
     required this.name,
-    required this.postAnswerOnPressed,
+    required this.answerPressed,
+    // required this.postAnswerOnPressed,
     required this.question,
   });
 
-  @override
-  State<QuestionWidget> createState() => _QuestionWidgetState();
-}
-
-class _QuestionWidgetState extends State<QuestionWidget> {
-  bool isOpen = false;
-  TextEditingController answerController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,11 +38,11 @@ class _QuestionWidgetState extends State<QuestionWidget> {
             children: [
               CircleAvatar(
                 backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(widget.image),
+                backgroundImage: NetworkImage(image),
                 onBackgroundImageError: (exception, stackTrace) {
                   "onBackgroundImageErrorException : $exception".logIt;
                 },
-                foregroundImage: NetworkImage(widget.image),
+                foregroundImage: NetworkImage(image),
                 onForegroundImageError: (exception, stackTrace) {
                   "onForegroundImageErrorException : $exception".logIt;
                 },
@@ -53,10 +52,10 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.name.split(" ")[0],
+                    name.split(" ")[0],
                     style: const TextStyle(color: Colors.black),
                   ),
-                  Text(widget.question)
+                  Text(question)
                 ],
               )
             ],
@@ -66,33 +65,12 @@ class _QuestionWidgetState extends State<QuestionWidget> {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(elevation: 0.0),
-                onPressed: () {
-                  setState(() {
-                    isOpen = !isOpen;
-                  });
-                },
-                child: const Text("Answer"),
+                onPressed: answerPressed,
+                child:
+                    const Text("View Answer", style: TextStyle(fontSize: 16)),
               )
             ],
           ),
-          Visibility(
-            visible: isOpen,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: TextFormField(
-                controller: answerController,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: widget.postAnswerOnPressed,
-                    icon: const Icon(Icons.send),
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );

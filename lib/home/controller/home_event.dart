@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class HomeEvent {
   HomeEvent();
 }
@@ -26,11 +28,17 @@ class GetQuestion extends HomeEvent {
 
 class PostAnswer extends HomeEvent {
   final String questionId;
-  final String question;
+  final String answer;
   final String userId;
   PostAnswer({
     required this.questionId,
-    required this.question,
+    required this.answer,
     required this.userId,
   });
+}
+
+class GetAnswer extends HomeEvent {
+  final String questionId;
+  final BuildContext context;
+  GetAnswer({required this.questionId, required this.context});
 }

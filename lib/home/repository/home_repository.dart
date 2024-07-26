@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:the_qa/_util/extension.dart';
+import 'package:the_qa/home/model/answer_model.dart';
 import 'package:the_qa/home/model/question_model.dart';
 import 'package:the_qa/home/model/user_model.dart';
 
@@ -14,6 +16,7 @@ abstract class HomeRepository {
     required String question,
     required String userId,
   });
+  Future<List<AnswerModel>> getAnswers({required String questionId});
 }
 
 class HomeRepositoryImpl extends HomeRepository {
@@ -87,5 +90,28 @@ class HomeRepositoryImpl extends HomeRepository {
     );
 
     return completer.future;
+  }
+
+  @override
+  Future<List<AnswerModel>> getAnswers({required String questionId}) async {
+    ">>>>>>Question Id : $questionId".logIt;
+    final FirebaseDatabase database = FirebaseDatabase.instance;
+    DatabaseReference reference = database.ref("Answers");
+    Query query = reference.orderByChild('questionId').equalTo(questionId);
+    DatabaseEvent event = await query.once();
+    ">>>>>Event : ${event.snapshot.value}".logIt;
+    if (event != null) {
+      Map<String, dynamic> data =
+          Map<String, dynamic>.from(event.snapshot.value as Map);
+
+      List<AnswerModel> answerList = data.entries.map((entry) {
+        return AnswerModel.fromJson((entry));
+      }).toList();
+
+      ">>>>>>Answer List : ${answerList}".logIt;
+      return answerList;
+    } else {
+      return [];
+    }
   }
 }

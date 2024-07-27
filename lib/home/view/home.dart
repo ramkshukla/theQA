@@ -5,6 +5,7 @@ import 'package:the_qa/_util/string_constants.dart';
 import 'package:the_qa/home/controller/home_bloc.dart';
 import 'package:the_qa/home/controller/home_event.dart';
 import 'package:the_qa/home/controller/home_state.dart';
+import 'package:the_qa/home/view/answer_widget.dart';
 import 'package:the_qa/home/view/post_dialog.dart';
 import 'package:the_qa/home/view/question_widget.dart';
 
@@ -27,6 +28,7 @@ class HomeUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BuildContext hcontext = context;
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return BlocBuilder<HomeBloc, HomeState>(
@@ -82,8 +84,6 @@ class HomeUI extends StatelessWidget {
                           return QuestionWidget(
                             image: state.userModel.imgUrl,
                             answerPressed: () async {
-                              "///////Question Id: ${state.questionModel[index].questionId}"
-                                  .logIt;
                               context.read<HomeBloc>().add(
                                     GetAnswer(
                                       questionId:
@@ -94,70 +94,14 @@ class HomeUI extends StatelessWidget {
                               await showModalBottomSheet(
                                 context: context,
                                 builder: (context) {
-                                  return Container(
+                                  return AnswerWidget(
                                     height: height,
                                     width: width,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(16)),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        state.answerModel.isEmpty
-                                            ? const Center(
-                                                child: Text("Not Found"))
-                                            : Expanded(
-                                                child: ListView.builder(
-                                                  itemCount:
-                                                      state.answerModel.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return Text(
-                                                      "Answer : ${state.answerModel[index].answer}",
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                        TextFormField(
-                                          controller: state.answerController,
-                                          decoration: InputDecoration(
-                                              border: const OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              suffixIcon: IconButton(
-                                                onPressed: () {
-                                                  context.read<HomeBloc>().add(
-                                                        PostAnswer(
-                                                          questionId: state
-                                                              .questionModel[
-                                                                  index]
-                                                              .questionId,
-                                                          answer: state
-                                                              .answerController
-                                                              .text,
-                                                          userId: state
-                                                              .questionModel[
-                                                                  index]
-                                                              .userId,
-                                                        ),
-                                                      );
-                                                  Navigator.of(context).pop();
-                                                },
-                                                icon: const Icon(
-                                                  Icons.send,
-                                                  color: Color.fromRGBO(
-                                                      255, 255, 255, 1),
-                                                ),
-                                              )),
-                                        ),
-                                        const SizedBox(height: 5)
-                                      ],
-                                    ),
+                                    state: state,
+                                    quesionId:
+                                        state.questionModel[index].questionId,
+                                    userId: state.questionModel[index].userId,
+                                    hcontext: hcontext,
                                   );
                                 },
                               );

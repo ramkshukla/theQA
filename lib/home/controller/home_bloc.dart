@@ -56,6 +56,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           question: event.answer,
           userId: event.userId,
         );
+        state.answerController.clear();
+
         emit(state.copyWith(isLoading: false));
       },
     );

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/_util/string_constants.dart';
 import 'package:the_qa/home/controller/home_bloc.dart';
 import 'package:the_qa/home/controller/home_event.dart';
 import 'package:the_qa/home/controller/home_state.dart';
-import 'package:the_qa/home/view/answer_widget.dart';
-import 'package:the_qa/home/view/post_dialog.dart';
-import 'package:the_qa/home/view/question_widget.dart';
+import 'package:the_qa/home/view/widget/answer_widget.dart';
+import 'package:the_qa/home/view/widget/post_dialog.dart';
+import 'package:the_qa/home/view/widget/question_widget.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

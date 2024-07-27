@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/home/controller/home_event.dart';
@@ -67,7 +66,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(isAnswerLoading: true));
         List<AnswerModel> answers =
             await HomeRepositoryImpl().getAnswers(questionId: event.questionId);
-
         emit(state.copyWith(answerModel: answers, isAnswerLoading: false));
       },
     );

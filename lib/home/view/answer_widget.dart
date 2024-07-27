@@ -48,6 +48,7 @@ class AnswerWidget extends StatelessWidget {
                     },
                   ),
                 ),
+          state.answerModel.isEmpty ? const Spacer() : const SizedBox(),
           TextFormField(
             controller: state.answerController,
             decoration: InputDecoration(

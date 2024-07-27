@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/home/model/answer_model.dart';
 import 'package:the_qa/home/model/question_model.dart';
 import 'package:the_qa/home/model/user_model.dart';
@@ -38,9 +37,6 @@ class HomeRepositoryImpl extends HomeRepository {
     String? question,
   }) async {
     Completer completer = Completer();
-
-    // DatabaseReference ref = FirebaseDatabase.instance
-    //     .ref("posts/${FirebaseDatabase.instance.ref().root.push().key}");
     DatabaseReference ref = FirebaseDatabase.instance.ref();
     String? uniqKey = ref.child("Posts").push().key;
     DatabaseReference uRef = ref.child("Posts").child(uniqKey!);
@@ -72,9 +68,6 @@ class HomeRepositoryImpl extends HomeRepository {
     required String userId,
   }) {
     Completer completer = Completer();
-
-    // DatabaseReference ref = FirebaseDatabase.instance
-    //     .ref("posts/${FirebaseDatabase.instance.ref().root.push().key}");
     DatabaseReference ref = FirebaseDatabase.instance.ref();
     String? uniqKey = ref.child("Answers").push().key;
     DatabaseReference uRef = ref.child("Answers").child(uniqKey!);
@@ -94,24 +87,21 @@ class HomeRepositoryImpl extends HomeRepository {
 
   @override
   Future<List<AnswerModel>> getAnswers({required String questionId}) async {
-    ">>>>>>Question Id : $questionId".logIt;
     final FirebaseDatabase database = FirebaseDatabase.instance;
     DatabaseReference reference = database.ref("Answers");
     Query query = reference.orderByChild('questionId').equalTo(questionId);
     DatabaseEvent event = await query.once();
-    ">>>>>Event : ${event.snapshot.value}".logIt;
-    if (event != null) {
-      Map<String, dynamic> data =
-          Map<String, dynamic>.from(event.snapshot.value as Map);
-
-      List<AnswerModel> answerList = data.entries.map((entry) {
-        return AnswerModel.fromJson((entry));
-      }).toList();
-
-      ">>>>>>Answer List : ${answerList}".logIt;
-      return answerList;
-    } else {
+    if (event.snapshot.value == null) {
       return [];
     }
+
+    Map<String, dynamic> data =
+        Map<String, dynamic>.from(event.snapshot.value as Map);
+
+    List<AnswerModel> answerList = data.entries.map((entry) {
+      return AnswerModel.fromJson((entry));
+    }).toList();
+
+    return answerList;
   }
 }

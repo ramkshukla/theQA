@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/home/model/answer_model.dart';
 import 'package:the_qa/home/model/question_model.dart';
 import 'package:the_qa/home/model/user_model.dart';
 
 abstract class HomeRepository {
   Future<UserModel> getUserData();
-  Future<void> savePost({required String questionId, required String question});
+  Future<void> savePost({required String question});
   Future<List<QuestionModel>> getQuestions();
   Future<void> postAnswer({
     required String questionId,
@@ -32,17 +33,12 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<void> savePost({
-    String? questionId,
-    String? question,
-  }) async {
+  Future<void> savePost({String? question}) async {
     Completer completer = Completer();
     DatabaseReference ref = FirebaseDatabase.instance.ref();
     String? uniqKey = ref.child("Posts").push().key;
     DatabaseReference uRef = ref.child("Posts").child(uniqKey!);
-
     completer.complete(uRef.set({"userId": userId, "question": question}));
-
     return completer.future;
   }
 
@@ -101,6 +97,8 @@ class HomeRepositoryImpl extends HomeRepository {
     List<AnswerModel> answerList = data.entries.map((entry) {
       return AnswerModel.fromJson((entry));
     }).toList();
+
+    "Answer List >>>> $answerList".logIt;
 
     return answerList;
   }

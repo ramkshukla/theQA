@@ -5,18 +5,12 @@ class QuestionWidget extends StatelessWidget {
   final String image;
   final String name;
   final String question;
-  // final Function() postAnswerOnPressed;
-  // final List<AnswerModel> answer;
   final Function() answerPressed;
-  // final TextEditingController answerController;
   const QuestionWidget({
     super.key,
-    // required this.answerController,
-    // required this.answer,
     required this.image,
     required this.name,
     required this.answerPressed,
-    // required this.postAnswerOnPressed,
     required this.question,
   });
 

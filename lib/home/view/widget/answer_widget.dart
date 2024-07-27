@@ -34,49 +34,66 @@ class AnswerWidget extends StatelessWidget {
           topRight: Radius.circular(16),
         ),
       ),
-      child: Column(
-        children: [
-          state.answerModel.isEmpty
-              ? const Center(child: Text("Not Found"))
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: state.answerModel.length,
-                    itemBuilder: (context, index) {
-                      return Text(
-                        "Answer : ${state.answerModel[index].answer}",
-                      );
-                    },
+      child: state.isAnswerLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              children: [
+                state.answerModel.isEmpty
+                    ? const Center(child: Text("Not Found"))
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: state.answerModel.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Answer : ${state.answerModel[index].answer}",
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                state.answerModel.isEmpty ? const Spacer() : const SizedBox(),
+                TextFormField(
+                  controller: state.answerController,
+                  decoration: InputDecoration(
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    hintStyle: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                    hintText: "Submit answer",
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        hcontext.read<HomeBloc>().add(
+                              PostAnswer(
+                                questionId: quesionId,
+                                answer: state.answerController.text,
+                                userId: userId,
+                              ),
+                            );
+                      },
+                      icon: const Icon(
+                        Icons.send,
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                    ),
                   ),
                 ),
-          state.answerModel.isEmpty ? const Spacer() : const SizedBox(),
-          TextFormField(
-            controller: state.answerController,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.white,
-                ),
-              ),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  hcontext.read<HomeBloc>().add(
-                        PostAnswer(
-                          questionId: quesionId,
-                          answer: state.answerController.text,
-                          userId: userId,
-                        ),
-                      );
-                },
-                icon: const Icon(
-                  Icons.send,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
+                const SizedBox(height: 5)
+              ],
             ),
-          ),
-          const SizedBox(height: 5)
-        ],
-      ),
     );
   }
 }

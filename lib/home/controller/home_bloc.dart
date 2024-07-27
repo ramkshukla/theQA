@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/home/controller/home_event.dart';
@@ -13,17 +11,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetUserData>(
       (event, emit) async {
         final user = await HomeRepositoryImpl().getUserData();
-        "User: $user".logIt;
         emit(state.copyWith(userModel: user));
       },
     );
 
     on<SavePost>(
       (event, emit) async {
-        await HomeRepositoryImpl().savePost(
-          question: event.question,
-          questionId: Random().nextInt(1000).toString(),
-        );
+        await HomeRepositoryImpl().savePost(question: event.question);
         add(GetQuestion());
       },
     );
@@ -66,6 +60,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(isAnswerLoading: true));
         List<AnswerModel> answers =
             await HomeRepositoryImpl().getAnswers(questionId: event.questionId);
+        "Answer List Bloc >>>> $answers".logIt;
         emit(state.copyWith(answerModel: answers, isAnswerLoading: false));
       },
     );

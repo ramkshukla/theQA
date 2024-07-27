@@ -33,7 +33,7 @@ class HomeUI extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(
             title: const Text(
               HomeConstants.home,
@@ -90,8 +90,11 @@ class HomeUI extends StatelessWidget {
                                       context: context,
                                     ),
                                   );
+                              await Future.delayed(const Duration(seconds: 1));
+
                               await showModalBottomSheet(
                                 context: context,
+                                useSafeArea: true,
                                 builder: (context) {
                                   return AnswerWidget(
                                     height: height,

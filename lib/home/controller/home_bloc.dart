@@ -34,10 +34,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         List<QuestionModel> questions =
             await HomeRepositoryImpl().getQuestions();
         "Question : ${questions[0].question}".logIt;
-        emit(state.copyWith(
+        emit(
+          state.copyWith(
             questionModel: questions,
             isLoading: false,
-            showAnswer: List.filled(questions.length, false)));
+            showAnswer: List.filled(questions.length, false),
+          ),
+        );
       },
     );
 
@@ -57,7 +60,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<GetAnswer>(
       (event, emit) async {
-        emit(state.copyWith(isAnswerLoading: true));
+        emit(state.copyWith(isAnswerLoading: true, answerModel: []));
         List<AnswerModel> answers =
             await HomeRepositoryImpl().getAnswers(questionId: event.questionId);
         "Answer List Bloc >>>> $answers".logIt;

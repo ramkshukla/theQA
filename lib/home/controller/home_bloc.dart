@@ -1,23 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:the_qa/_util/extension.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:the_qa/_util/app_constant.dart';
 import 'package:the_qa/home/controller/home_event.dart';
 import 'package:the_qa/home/controller/home_state.dart';
 import 'package:the_qa/home/model/answer_model.dart';
 import 'package:the_qa/home/model/question_model.dart';
+import 'package:the_qa/home/model/user_model.dart';
 import 'package:the_qa/home/repository/home_repository.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeState.initial()) {
     on<GetUserData>(
       (event, emit) async {
-        final user = await HomeRepositoryImpl().getUserData();
+        userId = await Hive.box("userBox").get("userId", defaultValue: "");
+        UserModel user = await HomeRepositoryImpl().getUserData(userId: userId);
         emit(state.copyWith(userModel: user));
       },
     );
 
     on<SavePost>(
       (event, emit) async {
-        await HomeRepositoryImpl().savePost(question: event.question);
+        await HomeRepositoryImpl().savePost(
+          question: event.question,
+          userId: event.userId,
+          userImage: event.userImage,
+          userName: event.userName,
+        );
         add(GetQuestion());
       },
     );
@@ -33,7 +42,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(isLoading: true));
         List<QuestionModel> questions =
             await HomeRepositoryImpl().getQuestions();
-        "Question : ${questions[0].question}".logIt;
+        // add(GetUserData(userId: userId));
         emit(
           state.copyWith(
             questionModel: questions,
@@ -46,15 +55,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<PostAnswer>(
       (event, emit) async {
-        emit(state.copyWith(isLoading: true));
         await HomeRepositoryImpl().postAnswer(
           questionId: event.questionId,
           question: event.answer,
           userId: event.userId,
         );
         state.answerController.clear();
-
-        emit(state.copyWith(isLoading: false));
+        Navigator.of(event.context).pop();
       },
     );
 
@@ -63,8 +70,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(isAnswerLoading: true, answerModel: []));
         List<AnswerModel> answers =
             await HomeRepositoryImpl().getAnswers(questionId: event.questionId);
-        "Answer List Bloc >>>> $answers".logIt;
-        emit(state.copyWith(answerModel: answers, isAnswerLoading: false));
+        emit(
+          state.copyWith(
+              answerModel: answers,
+              isAnswerLoading: false,
+              userId: event.userId,
+              questionId: event.questionId),
+        );
       },
     );
   }

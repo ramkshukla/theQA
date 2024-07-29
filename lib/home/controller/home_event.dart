@@ -5,15 +5,20 @@ abstract class HomeEvent {
 }
 
 class GetUserData extends HomeEvent {
-  GetUserData();
+  final String userId;
+  GetUserData({required this.userId});
 }
 
 class SavePost extends HomeEvent {
   final String userId;
   final String question;
+  final String userName;
+  final String userImage;
   SavePost({
     required this.userId,
     required this.question,
+    required this.userName,
+    required this.userImage,
   });
 }
 
@@ -30,15 +35,21 @@ class PostAnswer extends HomeEvent {
   final String questionId;
   final String answer;
   final String userId;
-  PostAnswer({
-    required this.questionId,
-    required this.answer,
-    required this.userId,
-  });
+  final BuildContext context;
+  PostAnswer(
+      {required this.questionId,
+      required this.answer,
+      required this.userId,
+      required this.context});
 }
 
 class GetAnswer extends HomeEvent {
   final String questionId;
   final BuildContext context;
-  GetAnswer({required this.questionId, required this.context});
+  final String userId;
+  GetAnswer({
+    required this.questionId,
+    required this.context,
+    required this.userId,
+  });
 }

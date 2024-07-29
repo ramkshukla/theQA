@@ -10,12 +10,16 @@ class HomeState {
   final List<AnswerModel> answerModel;
   final UserModel userModel;
   final List<bool> showAnswer;
+  final String userId;
+  final String questionId;
   final bool isShowing;
   final bool isAnswerLoading;
   TextEditingController questionController = TextEditingController();
   TextEditingController answerController = TextEditingController();
 
   HomeState({
+    required this.questionId,
+    required this.userId,
     required this.showAnswer,
     required this.isAnswerLoading,
     required this.isShowing,
@@ -33,6 +37,8 @@ class HomeState {
       isShowing: false,
       showAnswer: [],
       isAnswerLoading: false,
+      questionId: "",
+      userId: "",
       question: "",
       questionModel: [],
       answerModel: [],
@@ -47,12 +53,16 @@ class HomeState {
     bool? isAnswerLoading,
     List<bool>? showAnswer,
     UserModel? userModel,
+    String? userId,
+    String? questionId,
     List<AnswerModel>? answerModel,
     List<QuestionModel>? questionModel,
     TextEditingController? questionController,
     TextEditingController? answerController,
   }) {
     return HomeState(
+      questionId: questionId ?? this.questionId,
+      userId: userId ?? this.userId,
       isAnswerLoading: isAnswerLoading ?? this.isAnswerLoading,
       showAnswer: showAnswer ?? this.showAnswer,
       isShowing: isShowing ?? this.isShowing,

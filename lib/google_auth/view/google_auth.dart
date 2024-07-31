@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_qa/_util/routes.dart';
 import 'package:the_qa/_util/string_constants.dart';
 import 'package:the_qa/google_auth/controller/google_auth_bloc.dart';
 import 'package:the_qa/google_auth/controller/google_auth_event.dart';
@@ -26,12 +27,7 @@ class GoogleAuthUI extends StatelessWidget {
     return BlocConsumer<GoogleAuthBloc, GoogleAuthState>(
       listener: (context, state) {
         if (state.signInSuccess) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Home(),
-            ),
-          );
+          Navigator.popAndPushNamed(context, RouteNames.home);
         }
       },
       builder: (context, state) {

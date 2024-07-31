@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_qa/_util/app_constant.dart';
 import 'package:the_qa/_util/extension.dart';
-import 'package:the_qa/_util/string_constants.dart';
-import 'package:the_qa/google_auth/view/google_auth.dart';
+import 'package:the_qa/_util/routes.dart';
 import 'package:the_qa/home/controller/home_bloc.dart';
 import 'package:the_qa/home/controller/home_event.dart';
 import 'package:the_qa/home/controller/home_state.dart';
@@ -38,6 +37,7 @@ class HomeUI extends StatelessWidget {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
+            leading: null,
             title: Text(
               userName.isNotEmpty ? "Welcome $userName" : "Home",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -46,13 +46,7 @@ class HomeUI extends StatelessWidget {
               IconButton(
                 onPressed: userId.isEmpty
                     ? () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const GoogleAuth();
-                            },
-                          ),
-                        );
+                        Navigator.pushNamed(context, RouteNames.login);
                       }
                     : () async {
                         final result = await showDialog(
@@ -230,6 +224,7 @@ Future<void> showCustomBottomSheet(
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CircleAvatar(
                                   backgroundColor: Colors.grey,
@@ -246,6 +241,14 @@ Future<void> showCustomBottomSheet(
                                     Text(state.answerModel[index].answer),
                                   ],
                                 ),
+                                const Spacer(),
+                                Text(
+                                  state.answerModel[index].postedTime,
+                                  style: const TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey,
+                                      fontStyle: FontStyle.italic),
+                                )
                               ],
                             ),
                           );
@@ -261,14 +264,8 @@ Future<void> showCustomBottomSheet(
                         suffixIcon: IconButton(
                           onPressed: userId.isEmpty
                               ? () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return const GoogleAuth();
-                                      },
-                                    ),
-                                  );
+                                  Navigator.pushNamed(
+                                      context, RouteNames.login);
                                 }
                               : () {
                                   hcontext.read<HomeBloc>().add(

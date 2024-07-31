@@ -31,8 +31,7 @@ class HomeUI extends StatelessWidget {
     return BlocConsumer<HomeBloc, HomeState>(
       listener: (context, state) {
         if (!state.isAnswerLoading) {
-          showCustomBottomSheet(
-              context, state, state.userId, state.questionId, "", "");
+          showCustomBottomSheet(context, state, state.questionId);
         }
       },
       builder: (context, state) {
@@ -87,9 +86,7 @@ class HomeUI extends StatelessWidget {
             ],
           ),
           body: state.questionModel.isEmpty
-              ? const Center(
-                  child: Text("No Questions found"),
-                )
+              ? const Center(child: Text("No Questions found"))
               : state.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : Column(
@@ -149,40 +146,33 @@ class HomeUI extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         ElevatedButton(
-                                          key: ValueKey(state
-                                              .questionModel[index].questionId),
+                                          key: ValueKey(
+                                            state.questionModel[index]
+                                                .questionId,
+                                          ),
                                           style: ElevatedButton.styleFrom(
                                               elevation: 0.0),
-                                          onPressed: userId.isEmpty
-                                              ? () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return const GoogleAuth();
-                                                      },
-                                                    ),
-                                                  );
-                                                }
-                                              : () {
-                                                  context.read<HomeBloc>().add(
-                                                        GetAnswer(
-                                                          userId: state
-                                                              .questionModel[
-                                                                  index]
-                                                              .userId,
-                                                          questionId: state
-                                                              .questionModel[
-                                                                  index]
-                                                              .questionId,
-                                                          postedTime:
-                                                              DateTime.now()
-                                                                  .toString(),
-                                                          userImage: "",
-                                                          userName: "",
-                                                          context: context,
-                                                        ),
-                                                      );
-                                                },
+                                          onPressed: () {
+                                            context.read<HomeBloc>().add(
+                                                  GetAnswer(
+                                                    userId: state
+                                                        .questionModel[index]
+                                                        .userId,
+                                                    questionId: state
+                                                        .questionModel[index]
+                                                        .questionId,
+                                                    postedTime: DateTime.now()
+                                                        .toString(),
+                                                    userImage: state
+                                                        .questionModel[index]
+                                                        .userImage,
+                                                    userName: state
+                                                        .questionModel[index]
+                                                        .userName,
+                                                    context: context,
+                                                  ),
+                                                );
+                                          },
                                           child: const Text(
                                             "View Answer",
                                             style: TextStyle(fontSize: 16),
@@ -207,11 +197,9 @@ class HomeUI extends StatelessWidget {
 Future<void> showCustomBottomSheet(
   BuildContext hcontext,
   HomeState state,
-  String userId,
   String questionId,
-  String userImage,
-  String userName,
 ) async {
+  ">>>>User Id : ${state.userId}".logIt;
   showModalBottomSheet(
     context: hcontext,
     isScrollControlled: true,
@@ -239,14 +227,24 @@ Future<void> showCustomBottomSheet(
                   children: [
                     Expanded(
                       child: ListView.builder(
-                        key: UniqueKey(),
                         itemCount: state.answerModel.length,
                         itemBuilder: (context, index) {
-                          "Answer Length : ${state.answerModel.length}".logIt;
-                          "Answer : ${state.answerModel[index].answer}".logIt;
-                          return Text(
-                            key: ValueKey(state.answerModel[index].answerId),
-                            state.answerModel[index].answer,
+                          return Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                backgroundImage: NetworkImage(userImage),
+                                foregroundImage: NetworkImage(userImage),
+                              ),
+                              const SizedBox(width: 8),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(userName),
+                                  Text(state.answerModel[index].answer),
+                                ],
+                              ),
+                            ],
                           );
                         },
                       ),
@@ -259,19 +257,30 @@ Future<void> showCustomBottomSheet(
                         labelText: 'Enter your answer',
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
-                          onPressed: () {
-                            hcontext.read<HomeBloc>().add(
-                                  PostAnswer(
-                                    questionId: questionId,
-                                    answer: state.answerController.text,
-                                    userId: userId,
-                                    context: bcontext,
-                                    postedTime: DateTime.now().toString(),
-                                    userImage: userImage,
-                                    userName: userName,
-                                  ),
-                                );
-                          },
+                          onPressed: userId.isEmpty
+                              ? () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const GoogleAuth();
+                                      },
+                                    ),
+                                  );
+                                }
+                              : () {
+                                  hcontext.read<HomeBloc>().add(
+                                        PostAnswer(
+                                          questionId: questionId,
+                                          answer: state.answerController.text,
+                                          userId: userId,
+                                          context: bcontext,
+                                          postedTime: DateTime.now().toString(),
+                                          userImage: userImage,
+                                          userName: userName,
+                                        ),
+                                      );
+                                },
                           icon: const Icon(Icons.send),
                         ),
                       ),

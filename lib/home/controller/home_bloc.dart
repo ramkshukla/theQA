@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:the_qa/_util/app_constant.dart';
+import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/home/controller/home_event.dart';
 import 'package:the_qa/home/controller/home_state.dart';
 import 'package:the_qa/home/model/answer_model.dart';
@@ -42,6 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(isLoading: true));
         List<QuestionModel> questions =
             await HomeRepositoryImpl().getQuestions();
+        "Images : ${questions[0].userImage}".logIt;
         emit(
           state.copyWith(
             questionModel: questions,
@@ -73,6 +75,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(isAnswerLoading: true, answerModel: []));
         List<AnswerModel> answers =
             await HomeRepositoryImpl().getAnswers(questionId: event.questionId);
+
+        ">>>>> Answer  : $answers".logIt;
         emit(
           state.copyWith(
             answerModel: answers,

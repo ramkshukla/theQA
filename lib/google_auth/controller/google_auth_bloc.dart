@@ -26,6 +26,8 @@ class GoogleAuthBloc extends Bloc<GoogleAuthEvent, GoogleAuthState> {
           "image": userCredential.user!.photoURL,
         });
         userId = userCredential.user!.providerData[0].uid!;
+        userImage = userCredential.user!.providerData[0].photoURL!;
+        userName = userCredential.user!.providerData[0].displayName!;
 
         await Hive.box("userBox").put(
           "userId",

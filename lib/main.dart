@@ -14,6 +14,7 @@ Future<void> main() async {
       projectId: "theqa-58df7",
     ),
   );
+
   await Hive.initFlutter();
   await Hive.openBox("userBox");
 

@@ -14,6 +14,9 @@ class HomeState {
   final String questionId;
   final bool isShowing;
   final bool isAnswerLoading;
+  final String userImage;
+  final String userName;
+  final String postedTime;
   TextEditingController questionController = TextEditingController();
   TextEditingController answerController = TextEditingController();
 
@@ -28,8 +31,11 @@ class HomeState {
     required this.questionController,
     required this.question,
     required this.answerModel,
-    required this.questionModel,
     required this.answerController,
+    required this.postedTime,
+    required this.questionModel,
+    required this.userImage,
+    required this.userName,
   });
 
   factory HomeState.initial() => HomeState(
@@ -44,22 +50,27 @@ class HomeState {
       answerModel: [],
       userModel: UserModel.initial(),
       questionController: TextEditingController(),
-      answerController: TextEditingController());
+      answerController: TextEditingController(),
+      postedTime: "",
+      userImage: "",
+      userName: "");
 
-  HomeState copyWith({
-    bool? isLoading,
-    String? question,
-    bool? isShowing,
-    bool? isAnswerLoading,
-    List<bool>? showAnswer,
-    UserModel? userModel,
-    String? userId,
-    String? questionId,
-    List<AnswerModel>? answerModel,
-    List<QuestionModel>? questionModel,
-    TextEditingController? questionController,
-    TextEditingController? answerController,
-  }) {
+  HomeState copyWith(
+      {bool? isLoading,
+      String? question,
+      bool? isShowing,
+      bool? isAnswerLoading,
+      List<bool>? showAnswer,
+      UserModel? userModel,
+      String? userId,
+      String? questionId,
+      List<AnswerModel>? answerModel,
+      List<QuestionModel>? questionModel,
+      TextEditingController? questionController,
+      TextEditingController? answerController,
+      String? userImage,
+      String? userName,
+      String? postedTime}) {
     return HomeState(
       questionId: questionId ?? this.questionId,
       userId: userId ?? this.userId,
@@ -73,6 +84,9 @@ class HomeState {
       isLoading: isLoading ?? this.isLoading,
       userModel: userModel ?? this.userModel,
       questionController: questionController ?? this.questionController,
+      userImage: userImage ?? this.userImage,
+      userName: userName ?? this.userName,
+      postedTime: postedTime ?? this.postedTime,
     );
   }
 }

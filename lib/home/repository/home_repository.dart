@@ -19,6 +19,9 @@ abstract class HomeRepository {
     required String questionId,
     required String question,
     required String userId,
+    required String userName,
+    required String userImage,
+    required String postedTime,
   });
   Future<List<AnswerModel>> getAnswers({required String questionId});
 }
@@ -75,6 +78,9 @@ class HomeRepositoryImpl extends HomeRepository {
     required String questionId,
     required String question,
     required String userId,
+    required String userImage,
+    required String userName,
+    required String postedTime,
   }) {
     Completer completer = Completer();
     DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -86,6 +92,9 @@ class HomeRepositoryImpl extends HomeRepository {
         {
           "userId": userId,
           "answer": question,
+          "postedTime": postedTime,
+          "userImage": userImage,
+          "userName": userName,
           "questionId": questionId,
         },
       ),

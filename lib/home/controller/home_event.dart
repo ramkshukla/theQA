@@ -35,21 +35,34 @@ class PostAnswer extends HomeEvent {
   final String questionId;
   final String answer;
   final String userId;
+  final String postedTime;
+  final String userImage;
+  final String userName;
   final BuildContext context;
-  PostAnswer(
-      {required this.questionId,
-      required this.answer,
-      required this.userId,
-      required this.context});
+  PostAnswer({
+    required this.questionId,
+    required this.answer,
+    required this.userId,
+    required this.context,
+    required this.userImage,
+    required this.userName,
+    required this.postedTime,
+  });
 }
 
 class GetAnswer extends HomeEvent {
   final String questionId;
   final BuildContext context;
   final String userId;
+  final String postedTime;
+  final String userImage;
+  final String userName;
   GetAnswer({
     required this.questionId,
     required this.context,
     required this.userId,
+    required this.userImage,
+    required this.userName,
+    required this.postedTime,
   });
 }

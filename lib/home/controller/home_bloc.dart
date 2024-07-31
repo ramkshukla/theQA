@@ -42,7 +42,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(isLoading: true));
         List<QuestionModel> questions =
             await HomeRepositoryImpl().getQuestions();
-        // add(GetUserData(userId: userId));
         emit(
           state.copyWith(
             questionModel: questions,
@@ -58,9 +57,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         await HomeRepositoryImpl().postAnswer(
           questionId: event.questionId,
           question: event.answer,
+          postedTime: event.postedTime,
+          userImage: event.userImage,
+          userName: event.userName,
           userId: event.userId,
         );
         state.answerController.clear();
+        // ignore: use_build_context_synchronously
         Navigator.of(event.context).pop();
       },
     );
@@ -72,10 +75,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             await HomeRepositoryImpl().getAnswers(questionId: event.questionId);
         emit(
           state.copyWith(
-              answerModel: answers,
-              isAnswerLoading: false,
-              userId: event.userId,
-              questionId: event.questionId),
+            answerModel: answers,
+            isAnswerLoading: false,
+            userId: event.userId,
+            questionId: event.questionId,
+          ),
         );
       },
     );

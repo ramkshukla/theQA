@@ -4,6 +4,7 @@ class QuestionModel {
   final String userId;
   final String userImage;
   final String userName;
+
   QuestionModel({
     required this.questionId,
     required this.question,
@@ -13,7 +14,12 @@ class QuestionModel {
   });
 
   factory QuestionModel.initial() => QuestionModel(
-      questionId: "", question: "", userId: "", userImage: "", userName: "");
+        questionId: "",
+        question: "",
+        userId: "",
+        userImage: "",
+        userName: "",
+      );
 
   factory QuestionModel.fromJson(MapEntry<String, dynamic> json) {
     return QuestionModel(

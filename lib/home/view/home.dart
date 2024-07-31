@@ -1,14 +1,12 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:the_qa/_util/app_constant.dart';
-import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/_util/routes.dart';
 import 'package:the_qa/home/controller/home_bloc.dart';
 import 'package:the_qa/home/controller/home_event.dart';
 import 'package:the_qa/home/controller/home_state.dart';
-import 'package:the_qa/home/view/widget/post_dialog.dart';
+import 'package:the_qa/home/view/post_dialog.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -188,7 +186,7 @@ class HomeUI extends StatelessWidget {
                                           },
                                           child: const Text(
                                             "View Answer",
-                                            style: TextStyle(fontSize: 16),
+                                            style: TextStyle(fontSize: 14),
                                           ),
                                         )
                                       ],

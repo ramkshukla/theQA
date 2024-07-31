@@ -5,7 +5,6 @@ import 'package:the_qa/_util/string_constants.dart';
 import 'package:the_qa/google_auth/controller/google_auth_bloc.dart';
 import 'package:the_qa/google_auth/controller/google_auth_event.dart';
 import 'package:the_qa/google_auth/controller/google_auth_state.dart';
-import 'package:the_qa/home/view/home.dart';
 
 class GoogleAuth extends StatelessWidget {
   const GoogleAuth({super.key});

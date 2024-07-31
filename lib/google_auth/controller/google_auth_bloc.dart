@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:the_qa/_util/app_constant.dart';
 import 'package:the_qa/google_auth/controller/google_auth_event.dart';
 import 'package:the_qa/google_auth/controller/google_auth_state.dart';
 import 'package:the_qa/google_auth/repository/google_auth_repository.dart';
@@ -25,14 +24,13 @@ class GoogleAuthBloc extends Bloc<GoogleAuthEvent, GoogleAuthState> {
           "email": userCredential.user!.email,
           "image": userCredential.user!.photoURL,
         });
-        userId = userCredential.user!.providerData[0].uid!;
-        userImage = userCredential.user!.providerData[0].photoURL!;
-        userName = userCredential.user!.providerData[0].displayName!;
 
-        await Hive.box("userBox").put(
-          "userId",
-          userCredential.user!.providerData[0].uid,
-        );
+        await Hive.box("userBox")
+            .put("userId", userCredential.user!.providerData[0].uid);
+        await Hive.box("userBox")
+            .put("userImage", userCredential.user!.providerData[0].photoURL!);
+        await Hive.box("userBox")
+            .put("userName", userCredential.user!.providerData[0].displayName!);
 
         emit(
           state.copyWith(

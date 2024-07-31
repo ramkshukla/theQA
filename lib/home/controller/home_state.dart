@@ -13,7 +13,7 @@ class HomeState {
   final String userId;
   final String questionId;
   final bool isShowing;
-  final bool isAnswerLoading;
+  final int isAnswerLoading;
   final String userImage;
   final String userName;
   final String postedTime;
@@ -42,7 +42,7 @@ class HomeState {
       isLoading: false,
       isShowing: false,
       showAnswer: [],
-      isAnswerLoading: false,
+      isAnswerLoading: 0,
       questionId: "",
       userId: "",
       question: "",
@@ -59,7 +59,7 @@ class HomeState {
       {bool? isLoading,
       String? question,
       bool? isShowing,
-      bool? isAnswerLoading,
+      int? isAnswerLoading,
       List<bool>? showAnswer,
       UserModel? userModel,
       String? userId,

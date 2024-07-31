@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:the_qa/_util/app_constant.dart';
 import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/_util/routes.dart';
@@ -29,7 +31,7 @@ class HomeUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(
       listener: (context, state) {
-        if (!state.isAnswerLoading) {
+        if (state.isAnswerLoading == 2) {
           showCustomBottomSheet(context, state, state.questionId);
         }
       },
@@ -37,7 +39,29 @@ class HomeUI extends StatelessWidget {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            leading: null,
+            elevation: 0.0,
+            surfaceTintColor: Colors.transparent,
+            leading: userImage.isNotEmpty
+                ? Builder(
+                    builder: (BuildContext context) {
+                      return IconButton(
+                        icon: ClipOval(
+                          child: Image.network(userImage),
+                        ),
+                        onPressed: () async {
+                          await Hive.box("userBox").clear();
+                          userId = "";
+                          userImage = "";
+                          userName = "";
+                          Navigator.popAndPushNamed(context, RouteNames.home);
+                        },
+                        tooltip: MaterialLocalizations.of(context)
+                            .openAppDrawerTooltip,
+                      );
+                    },
+                  )
+                : null,
+            automaticallyImplyLeading: false,
             title: Text(
               userName.isNotEmpty ? "Welcome $userName" : "Home",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -54,16 +78,16 @@ class HomeUI extends StatelessWidget {
                             builder: (context) {
                               return Dialog(
                                 child: PostDialog(
-                                  controller: state.questionController,
-                                  onPressed: () {
-                                    Navigator.of(context).pop(
-                                      {"text": state.questionController.text},
-                                    );
-                                  },
-                                ),
+                                    controller: state.questionController,
+                                    onPressed: () {
+                                      Navigator.of(context).pop(
+                                        {"text": state.questionController.text},
+                                      );
+                                    }),
                               );
                             });
-                        if (result != null) {
+                        if (result != null &&
+                            state.questionController.text.isNotEmpty) {
                           context.read<HomeBloc>().add(
                                 SavePost(
                                   userId: userId,
@@ -88,11 +112,7 @@ class HomeUI extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: state.questionModel.length,
                             itemBuilder: (context, index) {
-                              "Image : ${state.questionModel[index].userImage}"
-                                  .logIt;
                               return Container(
-                                key: ValueKey(
-                                    state.questionModel[index].questionId),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 16),
                                 margin: const EdgeInsets.symmetric(
@@ -267,19 +287,23 @@ Future<void> showCustomBottomSheet(
                                   Navigator.pushNamed(
                                       context, RouteNames.login);
                                 }
-                              : () {
-                                  hcontext.read<HomeBloc>().add(
-                                        PostAnswer(
-                                          questionId: questionId,
-                                          answer: state.answerController.text,
-                                          userId: userId,
-                                          context: bcontext,
-                                          postedTime: DateTime.now().toString(),
-                                          userImage: userImage,
-                                          userName: userName,
-                                        ),
-                                      );
-                                },
+                              : state.answerController.text.isNotEmpty
+                                  ? () {
+                                      hcontext.read<HomeBloc>().add(
+                                            PostAnswer(
+                                              questionId: questionId,
+                                              answer:
+                                                  state.answerController.text,
+                                              userId: userId,
+                                              context: bcontext,
+                                              postedTime:
+                                                  DateTime.now().toString(),
+                                              userImage: userImage,
+                                              userName: userName,
+                                            ),
+                                          );
+                                    }
+                                  : () {},
                           icon: const Icon(Icons.send),
                         ),
                       ),

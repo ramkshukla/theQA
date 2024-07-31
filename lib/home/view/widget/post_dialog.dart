@@ -11,22 +11,24 @@ class PostDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
+      height: 150,
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        color: Colors.amber[400],
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: Colors.tealAccent,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          const Text("Enter Question!"),
-          const SizedBox(height: 8),
+          const Text("Enter Question!", style: TextStyle(fontSize: 16)),
+          const SizedBox(height: 16),
           TextFormField(
             controller: controller,
             decoration: const InputDecoration(
               fillColor: Colors.white,
+              hintText: "Enter question",
+              hintStyle: TextStyle(fontWeight: FontWeight.w400),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(5.0),
@@ -41,6 +43,7 @@ class PostDialog extends StatelessWidget {
               ),
             ),
           ),
+          const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

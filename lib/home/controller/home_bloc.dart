@@ -15,6 +15,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetUserData>(
       (event, emit) async {
         userId = await Hive.box("userBox").get("userId", defaultValue: "");
+        userName = await Hive.box("userBox").get("userName", defaultValue: "");
+        userImage =
+            await Hive.box("userBox").get("userImage", defaultValue: "");
         UserModel user = await HomeRepositoryImpl().getUserData(userId: userId);
         emit(state.copyWith(userModel: user));
       },
@@ -28,6 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           userImage: event.userImage,
           userName: event.userName,
         );
+        state.questionController.clear();
         add(GetQuestion());
       },
     );
@@ -72,15 +76,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<GetAnswer>(
       (event, emit) async {
-        emit(state.copyWith(isAnswerLoading: true, answerModel: []));
+        emit(state.copyWith(isAnswerLoading: 1, answerModel: []));
         List<AnswerModel> answers =
             await HomeRepositoryImpl().getAnswers(questionId: event.questionId);
 
-        ">>>>> Answer  : $answers".logIt;
         emit(
           state.copyWith(
             answerModel: answers,
-            isAnswerLoading: false,
+            isAnswerLoading: 2,
             userId: event.userId,
             questionId: event.questionId,
           ),

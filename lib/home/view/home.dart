@@ -233,14 +233,20 @@ Future<void> showCustomBottomSheet(
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.grey,
-                                backgroundImage: NetworkImage(userImage),
-                                foregroundImage: NetworkImage(userImage),
+                                backgroundImage: NetworkImage(userImage.isEmpty
+                                    ? state.answerModel[index].userImage
+                                    : userImage),
+                                foregroundImage: NetworkImage(userImage.isEmpty
+                                    ? state.answerModel[index].userImage
+                                    : userImage),
                               ),
                               const SizedBox(width: 8),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(userName),
+                                  Text(userName.isEmpty
+                                      ? state.answerModel[index].userName
+                                      : userName),
                                   Text(state.answerModel[index].answer),
                                 ],
                               ),

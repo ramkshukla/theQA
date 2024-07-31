@@ -38,11 +38,10 @@ class HomeUI extends StatelessWidget {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            title: const Text(
-              HomeConstants.home,
-              style: TextStyle(fontSize: 16),
+            title: Text(
+              userName.isNotEmpty ? "Welcome $userName" : "Home",
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
-            centerTitle: true,
             actions: [
               IconButton(
                 onPressed: userId.isEmpty
@@ -199,7 +198,6 @@ Future<void> showCustomBottomSheet(
   HomeState state,
   String questionId,
 ) async {
-  ">>>>User Id : ${state.userId}".logIt;
   showModalBottomSheet(
     context: hcontext,
     isScrollControlled: true,
@@ -229,34 +227,32 @@ Future<void> showCustomBottomSheet(
                       child: ListView.builder(
                         itemCount: state.answerModel.length,
                         itemBuilder: (context, index) {
-                          return Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                backgroundImage: NetworkImage(userImage.isEmpty
-                                    ? state.answerModel[index].userImage
-                                    : userImage),
-                                foregroundImage: NetworkImage(userImage.isEmpty
-                                    ? state.answerModel[index].userImage
-                                    : userImage),
-                              ),
-                              const SizedBox(width: 8),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(userName.isEmpty
-                                      ? state.answerModel[index].userName
-                                      : userName),
-                                  Text(state.answerModel[index].answer),
-                                ],
-                              ),
-                            ],
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  backgroundImage: NetworkImage(
+                                      state.answerModel[index].userImage),
+                                  foregroundImage: NetworkImage(
+                                      state.answerModel[index].userImage),
+                                ),
+                                const SizedBox(width: 8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(state.answerModel[index].userName),
+                                    Text(state.answerModel[index].answer),
+                                  ],
+                                ),
+                              ],
+                            ),
                           );
                         },
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Spacer(),
                     TextFormField(
                       controller: state.answerController,
                       decoration: InputDecoration(

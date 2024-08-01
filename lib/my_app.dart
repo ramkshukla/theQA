@@ -17,10 +17,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Splash(),
-      // const Home(),
+      initialRoute: RouteNames.splash,
       routes: {
         RouteNames.login: (context) => const GoogleAuth(),
-        RouteNames.home: (context) => const Home()
+        RouteNames.home: (context) => const Home(),
+        RouteNames.splash: (context) => const Splash()
       },
     );
   }

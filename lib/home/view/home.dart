@@ -100,10 +100,10 @@ class HomeUI extends StatelessWidget {
               )
             ],
           ),
-          body: state.questionModel.isEmpty
-              ? const Center(child: Text("No Questions found"))
-              : state.isLoading
-                  ? const Center(child: CircularProgressIndicator())
+          body: state.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : state.questionModel.isEmpty
+                  ? const Center(child: Text("No Questions found"))
                   : Column(
                       children: [
                         Expanded(

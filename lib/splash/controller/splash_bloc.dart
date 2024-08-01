@@ -9,6 +9,7 @@ import 'package:the_qa/splash/controller/splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   SplashBloc() : super(SplashState()) {
+    "Bloc".logIt;
     on<MoveToHomeScreen>(
       (event, emit) {
         "Called>>>>>".logIt;

@@ -17,7 +17,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Splash(),
-      initialRoute: RouteNames.splash,
       routes: {
         RouteNames.login: (context) => const GoogleAuth(),
         RouteNames.home: (context) => const Home(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:the_qa/_util/assets_constant.dart';
 import 'package:the_qa/_util/routes.dart';
 import 'package:the_qa/_util/string_constants.dart';
 import 'package:the_qa/google_auth/controller/google_auth_bloc.dart';
@@ -41,27 +42,60 @@ class GoogleAuthUI extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    GoogleAuthConstants.heading,
-                    style: TextStyle(fontSize: 16),
+                  Image.asset(
+                    AssetsConstant.appLogo,
+                    height: 300,
+                    width: 300,
                   ),
-                  const Text(
-                    GoogleAuthConstants.subHeading,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
+                  // const Text(
+                  //   GoogleAuthConstants.heading,
+                  //   style: TextStyle(fontSize: 16),
+                  // ),
+                  // const Text(
+                  //   GoogleAuthConstants.subHeading,
+                  //   style: TextStyle(fontSize: 16),
+                  // ),
+                  const SizedBox(height: 100),
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: Colors.blue,
+                  //     elevation: 0.0,
+                  //     minimumSize: const Size(200, 50),
+
+                  //   ),
+                  //   onPressed: () {
+                  //     context.read<GoogleAuthBloc>().add(SignInEvent());
+                  //   },
+                  //   child: const Text(
+                  //     GoogleAuthConstants.google,
+                  //     style: TextStyle(color: Colors.white, fontSize: 17),
+                  //   ),
+                  // )
+
+                  ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
                       elevation: 0.0,
-                      minimumSize: const Size(200, 50),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        side: BorderSide(
+                          color: Colors.black54,
+                        ),
+                      ),
                     ),
                     onPressed: () {
                       context.read<GoogleAuthBloc>().add(SignInEvent());
                     },
-                    child: const Text(
-                      GoogleAuthConstants.google,
-                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    label: const Text(
+                      "Continue with Google",
+                      style: TextStyle(color: Colors.black, fontSize: 15),
+                    ),
+                    iconAlignment: IconAlignment.start,
+                    icon: Image.asset(
+                      AssetsConstant.google,
+                      height: 18,
+                      width: 18,
                     ),
                   )
                 ],

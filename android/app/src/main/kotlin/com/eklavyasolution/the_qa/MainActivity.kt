@@ -1,4 +1,4 @@
-package com.example.the_qa
+package com.eklavyasolution.the_qa
 
 import io.flutter.embedding.android.FlutterActivity
 

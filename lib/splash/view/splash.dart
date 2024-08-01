@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_qa/_util/assets_constant.dart';
-import 'package:the_qa/_util/extension.dart';
 import 'package:the_qa/_util/routes.dart';
 import 'package:the_qa/splash/controller/splash_bloc.dart';
 import 'package:the_qa/splash/controller/splash_event.dart';
@@ -31,11 +30,12 @@ class Splash extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.white,
-            body: Image.asset(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              AssetsConstant.logo,
+            body: Center(
+              child: Image.asset(
+                height: 500,
+                width: 500,
+                AssetsConstant.appLogo,
+              ),
             ),
           );
         },

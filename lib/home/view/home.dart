@@ -239,8 +239,16 @@ Future<void> showCustomBottomSheet(
                       child: ListView.builder(
                         itemCount: state.answerModel.length,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 8),
+                            decoration: const BoxDecoration(
+                              color: Colors.tealAccent,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                            ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
